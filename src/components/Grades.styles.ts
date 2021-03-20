@@ -170,7 +170,7 @@ export const ModalWrapper = styled.div`
     width: 100%;
     position: fixed;
     top: 0;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.8);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -187,7 +187,6 @@ export const Modal = styled.div<ResultsProps>`
     min-height: 220px;
     width: 30%;
     min-width: 310px;
-    background: #5C82FF;
     border-radius: 5px;
     opacity: 1;
     background: ${({color}) => color};
