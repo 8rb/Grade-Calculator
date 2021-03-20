@@ -22,11 +22,19 @@ type Grade = {
     percentage: string
 }
 
+type ModalInfo = {
+    title: string,
+    gradeNeeded: number,
+    message: string,
+    color: string,
+}
+
 const Grades = () => {
 
     const [grades, setGrades] = useState<Grade[]>([{grade: '', percentage: ''}, {grade: '', percentage: ''}, {grade: '', percentage: ''}])
     const [minGrade, setMinGrade] = useState('12.5');
     const [isModalActive, setModalActive] = useState(false);
+    const [modalInfo, setModalInfo] = useState<ModalInfo>();
 
     const updateValue = (index: number, type: string) => (e: any) => {
         let newArray = [...grades];
@@ -80,6 +88,37 @@ const Grades = () => {
         let gradeNeed = pointsNeed / percentageLeft * 100;
         console.log("You need", gradeNeed);
         setModalActive(true);
+
+
+        let calcTitle = "";
+        let calcMessage = "";
+        let color = "#5C82FF";
+        
+        if(gradeNeed <= 0) {
+            calcTitle = "YA PASASTE";
+            calcMessage = "Se logró sin final";
+        }
+        else if(gradeNeed > 0 && gradeNeed < 18) {
+            calcTitle = "SE LOGRA";
+            calcMessage = "Estudia nomás";
+        }
+        else if(gradeNeed > 18 && gradeNeed <= 20) {
+            calcTitle = "SE COMPLICA";
+            calcMessage = "Tendrás panetón por ahí?";
+        }
+        else {
+            calcTitle = "ERES BIKA";
+            calcMessage = "No es posible, un gusto.";
+            color = "#4B4B4B";
+        }
+
+        let modalInfo: ModalInfo = {
+            title: calcTitle,
+            gradeNeeded: gradeNeed,
+            message: calcMessage,
+            color: color,
+        }
+        setModalInfo(modalInfo);
     }
 
     const closeModal = () => {
@@ -112,7 +151,11 @@ const Grades = () => {
         </GradesWrapper>
         {isModalActive &&
             <ModalWrapper onClick={() => closeModal()}>
-                <Modal onClick={() => closeModal()}>JALASTE PERRO</Modal>
+                <Modal onClick={() => closeModal()} color={modalInfo?.color}>
+                    <h1>{modalInfo?.title}</h1>
+                    <p>{`Necesitas ${modalInfo?.gradeNeeded} en tu final para pasar `}</p>
+                    <p>{modalInfo?.message}</p>
+                </Modal>
             </ModalWrapper>
         }
         </>
