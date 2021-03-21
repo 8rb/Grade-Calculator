@@ -76,19 +76,14 @@ const Grades = () => {
         let acumPercentage = 0;
         for (let i = 0; i < grades.length; i++) {
             const element = grades[i];
-            // console.log(element);
             acum+=(+element.grade * +element.percentage / 100);
             acumPercentage+=(+element.percentage);
         }
-        console.log(acum);
-        console.log(acumPercentage);
         let pointsNeed = +minGrade - acum;
         let percentageLeft = 100 - acumPercentage;
-        console.log(pointsNeed);
         let gradeNeed = pointsNeed / percentageLeft * 100;
-        console.log("You need", gradeNeed);
+        gradeNeed = Math.round((gradeNeed + Number.EPSILON) * 100) / 100
         setModalActive(true);
-
 
         let calcTitle = "";
         let calcMessage = "";
@@ -122,7 +117,6 @@ const Grades = () => {
     }
 
     const closeModal = () => {
-        console.log("cerrando");
         setModalActive(false);
     }
 
