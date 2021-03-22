@@ -1,5 +1,6 @@
 import React from 'react';
-import Grades from './components/Grades';
+import './App.css';
+import Grades from '../components/Grades';
 
 const App = () => {
   return (
