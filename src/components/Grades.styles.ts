@@ -66,7 +66,7 @@ export const GradeRow = styled.div`
     align-items: center;
     box-sizing: border-box;
     margin: 2vh 10vw;
-    background: #FFDD7D;
+    background: ${({color}) => color};
     border-radius: 5px;
     font-weight: 700;
 `
@@ -183,21 +183,71 @@ export const ModalWrapper = styled.div`
 
 export const Modal = styled.div<ResultsProps>`
     position: absolute;
-    height: 30%;
+    height: 40%;
     min-height: 220px;
-    width: 30%;
-    min-width: 310px;
+    width: 31%;
+    min-width: 400px;
     border-radius: 5px;
     opacity: 1;
     background: ${({color}) => color};
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
     color: #fff;
     transition: all .2s ease-in-out;
     &:hover {
-        filter: brightness(80%);
+        filter: brightness(95%);
         cursor: pointer;
+    }
+    @media (max-width: 600px) {
+        height: 35%;
+        width: 30%;
+        min-width: 300px;
+    }
+`
+
+export const ModalTitle = styled.h1`
+    margin: 0;
+    font-size: 2.4rem;
+    padding-top: .8em;
+    margin-bottom: 1em;
+    text-align: center;
+    @media (max-width: 600px) {
+        font-size: 2rem;
+        padding-top: .5em;
+    }
+`
+
+export const ModalGradeText = styled.p`
+    margin: 0;
+    font-size: 1.1rem;
+    padding: 2em;
+    text-align: center;
+    @media (max-width: 600px) {
+        font-size: 1rem;
+        padding: 1em;
+    }
+`
+
+export const GradeText = styled.span`
+    margin: 0;
+    font-size: 1.15rem;
+    text-align: center;
+    display: inline;
+    padding: .2em;
+    font-weight: 700;
+    @media (max-width: 600px) {
+        font-size: 1rem;
+    }
+`
+
+export const ModalMessage = styled.p`
+    margin: 0;
+    font-size: 1.1rem;
+    padding: 1.5rem;
+    text-align: center;
+    @media (max-width: 600px) {
+        font-size: 1rem;
+        padding: 1em;
     }
 `
