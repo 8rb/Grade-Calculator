@@ -22,7 +22,7 @@ code {
 
 .app {
   min-height: 100vh;
-  min-width: 100%;
+  min-width: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
