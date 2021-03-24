@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     GradesWrapper,
     UpperContainer,
@@ -15,105 +15,91 @@ import {
     CloseButton,
     XIcon,
     Modal,
-    ModalWrapper} from './Grades.styles';
+    ModalWrapper,
+    ModalTitle,
+    ModalGradeText,
+    GradeText,
+    ModalMessage
+    } from './Grades.styles';
 
-type Grade = {
-    grade: string,
-    percentage: string
-}
-
-type ModalInfo = {
-    title: string,
-    gradeNeeded: number,
-    message: string,
-    color: string,
-}
+import { Grade, ModalInfo } from '../utils/types';
+import { calculateGrade } from '../utils/calculateGrade';
+import { generateColor } from '../utils/generateColor';
+import { initGrades } from '../utils/initGrades';
 
 const Grades = () => {
 
-    const [grades, setGrades] = useState<Grade[]>([{grade: '', percentage: ''}, {grade: '', percentage: ''}, {grade: '', percentage: ''}])
+    const [grades, setGrades] = useState<Grade[]>(initGrades);
     const [minGrade, setMinGrade] = useState('12.5');
     const [isModalActive, setModalActive] = useState(false);
     const [modalInfo, setModalInfo] = useState<ModalInfo>();
+    const [actualPercentage, setActualPercentage] = useState(0);
+
+    useEffect(() => {
+        //Only runs once, when component is rendered
+    },[]);
+
+    const addGrade = () => {
+        if(actualPercentage < 100) {
+            let newArray = [...grades];
+            const NewGrade: Grade = {
+                grade: '',
+                percentage: '',
+            };
+            newArray.push(NewGrade);
+            setGrades(newArray);
+        }
+    }
+
+    const removeGrade = (index: number) => {
+        let newArray = [...grades];
+        if(newArray.length > 1) {
+            newArray.splice(index, 1);
+        }
+        else {
+            let newArray = [...grades];
+            newArray[0].grade = "";
+            newArray[0].percentage = "";
+        }
+        setGrades(newArray);
+    }
 
     const updateValue = (index: number, type: string) => (e: any) => {
         let newArray = [...grades];
-        if(type === "grade")
-            newArray[index].grade = e.target.value;
-        else
-            newArray[index].percentage = e.target.value;
+        if(type === "grade") {
+            if(+e.target.value >= 0 && +e.target.value <= 20) {
+                newArray[index].grade = e.target.value;
+            }
+        }
+        else {
+            if(+e.target.value >= 0 && +e.target.value <= 100) {
+                let old = newArray[index].percentage;
+                newArray[index].percentage = e.target.value;
+                let acum = 0;
+                for (let i = 0; i < newArray.length; i++) {
+                    acum+=(+newArray[i].percentage);
+                }
+                if(acum <= 100) {
+                    setActualPercentage(acum);
+                }
+                else {
+                    newArray[index].percentage = old;
+                }
+            }
+        }
         setGrades(newArray);
     }
 
     const listOfGrades = grades.map(({grade, percentage}, index) => 
-        <GradeRow key={index}>
+        <GradeRow key={index} color={generateColor(index)}>
             <Input type="number" value={grade} onChange={updateValue(index, "grade")}/>
-            <Input type="number" value={percentage}onChange={updateValue(index, "percentage")}/>
-            { grades.length > 1 ? 
-            <CloseButton onClick={() => closeGrade(index)}><XIcon>&times;</XIcon></CloseButton>
-            : <CloseButton><XIcon>&times;</XIcon></CloseButton>}
+            <Input type="number" value={percentage} onChange={updateValue(index, "percentage")}/>
+            <CloseButton onClick={() => removeGrade(index)}><XIcon>&times;</XIcon></CloseButton>
         </GradeRow>
     )
 
-    const closeGrade = (index: number) => {
-        let newArray = [...grades];
-        newArray.splice(index, 1);
-        setGrades(newArray);
-    }
-
-    const addGrade = () => {
-        let newArray = [...grades];
-        const NewGrade: Grade = {
-            grade: '',
-            percentage: '',
-        };
-        newArray.push(NewGrade);
-        setGrades(newArray);
-    }
-
-    const calculateGrade = () => {
-        let acum = 0;
-        let acumPercentage = 0;
-        for (let i = 0; i < grades.length; i++) {
-            const element = grades[i];
-            acum+=(+element.grade * +element.percentage / 100);
-            acumPercentage+=(+element.percentage);
-        }
-        let pointsNeed = +minGrade - acum;
-        let percentageLeft = 100 - acumPercentage;
-        let gradeNeed = pointsNeed / percentageLeft * 100;
-        gradeNeed = Math.round((gradeNeed + Number.EPSILON) * 100) / 100
-        setModalActive(true);
-
-        let calcTitle = "";
-        let calcMessage = "";
-        let color = "#5C82FF";
-        
-        if(gradeNeed <= 0) {
-            calcTitle = "YA PASASTE";
-            calcMessage = "Se logró sin final";
-        }
-        else if(gradeNeed > 0 && gradeNeed < 18) {
-            calcTitle = "SE LOGRA";
-            calcMessage = "Estudia nomás";
-        }
-        else if(gradeNeed > 18 && gradeNeed <= 20) {
-            calcTitle = "SE COMPLICA";
-            calcMessage = "Tendrás panetón por ahí?";
-        }
-        else {
-            calcTitle = "ERES BIKA";
-            calcMessage = "No es posible, un gusto.";
-            color = "#4B4B4B";
-        }
-
-        let modalInfo: ModalInfo = {
-            title: calcTitle,
-            gradeNeeded: gradeNeed,
-            message: calcMessage,
-            color: color,
-        }
-        setModalInfo(modalInfo);
+    const onClickCalculate = () => {
+        calculateGrade(minGrade, grades, setModalActive, setModalInfo);
     }
 
     const closeModal = () => {
@@ -140,15 +126,15 @@ const Grades = () => {
                 {listOfGrades}
             </GradesRowContainer>
             <ButtonContainer>
-                <CalcButton onClick={() => calculateGrade()}>Por cuánto me voy?</CalcButton>
+                <CalcButton onClick={() => onClickCalculate()}>Por cuánto me voy?</CalcButton>
             </ButtonContainer>
         </GradesWrapper>
         {isModalActive &&
             <ModalWrapper onClick={() => closeModal()}>
-                <Modal onClick={() => closeModal()} color={modalInfo?.color}>
-                    <h1>{modalInfo?.title}</h1>
-                    <p>{`Necesitas ${modalInfo?.gradeNeeded} en tu final para pasar `}</p>
-                    <p>{modalInfo?.message}</p>
+                <Modal color={modalInfo?.color}>
+                    <ModalTitle>{modalInfo?.title}</ModalTitle>
+                    <ModalGradeText> {"Necesitas"} <GradeText>{modalInfo?.gradeNeeded}</GradeText> {"en tu final para pasar."}</ModalGradeText>
+                    <ModalMessage>{modalInfo?.message}</ModalMessage>
                 </Modal>
             </ModalWrapper>
         }
