@@ -24,6 +24,9 @@ export const UpperContainerRow = styled.div`
     width: 80%;
     justify-content: space-around;
     align-items: center;
+    @media (max-width: 600px) {
+        justify-content: space-between;
+    }
 `
 
 export const UpperContainerTitle = styled.h1`
@@ -56,6 +59,9 @@ export const GradeRowTitle = styled.div`
     margin: 2vh 10vw;
     font-weight: 500;
     font-size: 1.3rem;
+    @media (max-width: 600px) {
+        margin: 2vh 5vw;
+    }
 `
 
 export const GradeRow = styled.div`
@@ -69,6 +75,9 @@ export const GradeRow = styled.div`
     background: ${({color}) => color};
     border-radius: 5px;
     font-weight: 700;
+    @media (max-width: 600px) {
+        margin: 2vh 5vw;
+    }
 `
 
 // Elements
@@ -200,6 +209,7 @@ export const Modal = styled.div<ResultsProps>`
         cursor: pointer;
     }
     @media (max-width: 600px) {
+        justify-content: center;
         height: 35%;
         width: 30%;
         min-width: 300px;
@@ -214,7 +224,8 @@ export const ModalTitle = styled.h1`
     text-align: center;
     @media (max-width: 600px) {
         font-size: 2rem;
-        padding-top: .5em;
+        padding: 3vh;
+        margin-bottom: 1vh;
     }
 `
 
@@ -225,7 +236,7 @@ export const ModalGradeText = styled.p`
     text-align: center;
     @media (max-width: 600px) {
         font-size: 1rem;
-        padding: 1em;
+        padding: 3vh;
     }
 `
 
@@ -248,6 +259,6 @@ export const ModalMessage = styled.p`
     text-align: center;
     @media (max-width: 600px) {
         font-size: 1rem;
-        padding: 1em;
+        padding: 3vh;
     }
 `
