@@ -1,46 +1,33 @@
-# Getting Started with Create React App
+# Grade Calculator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<a  href="https://soybika.netlify.app/"  target="_blank"><img  style="display:inline-block"  alt="Logo"  height="100px"  src="https://raw.githubusercontent.com/8rb/Grade-Calculator/master/public/favicon.png?raw=true" /></a>
 
-## Available Scripts
+This repo is a _*grade calculator*_ web application made with **React 17** and React Hooks. For styling the chosen library was _*styled-components*_ and the main language for development was TypeScript.
 
-In the project directory, you can run:
+This web app is based on peruvian grading system where grades go from zero to twenty.
 
-### `yarn start`
+| Peruvian    |   0% - 100%  |
+| ----------- | -----------  |
+| 0           |  0%          |
+| 5           |  25%         |
+| 10          |  50%         |
+| 15          |  75%         |
+| 20          |  100%        |
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Why?
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+As a university student, I have found that every semester I manually calculate the grades I need in order to pass a course or to get a certain grade (for the scholarship you need more than 17 approximately). So I figured that creating a web app that can automate this process and make it much easier would be very helpful for most of the Peruvian students since the calculators that I have found do not work with this grading system.
 
-### `yarn test`
+## How does it work?
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The idea is to get all the grades that the student has gotten so far, and calculate the grade the student needs to pass the course. 
 
-### `yarn build`
+The grade needed to pass a course in Peru depends on the university, but it is between 10.5 (52.5%) and 12.5 (62.5%) for most universities. For that reason, I included a textbox where the student can put the grade they need to pass.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The **grade input**, which you can find on the left of any of the colored rectangles, is validated using this constraints, which means that you can only input a number between 0 to 20.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+On the other hand, the constraints for the weight (%) of each grade will always have to be greater than zero and less than 100% minus the accumulated weight of all the grades that the user has inputted.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Moreover, I added some simple buttons to add or remove grades, in case the user has a lot of grades in a certain course. These buttons make the UI very _*friendly and simple*_ to use.
 
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Finally, to know precisely the grade you need to pass a defined course, you have to click the blue bottom below, and the results will appear on a modal in the center of the screen. As a detail, I put a message in the modal that changes based on the needed grade to pass. This detail gives the UX a bit more personality and makes the app more pleasant and even funny to use.
