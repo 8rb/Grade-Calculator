@@ -61,6 +61,11 @@ const Grades = () => {
             newArray[0].grade = "";
             newArray[0].percentage = "";
         }
+        let acum = 0;
+        for (let i = 0; i < newArray.length; i++) {
+            acum+=(+newArray[i].percentage);
+        }
+        setActualPercentage(acum);
         setGrades(newArray);
     }
 
@@ -120,7 +125,7 @@ const Grades = () => {
             <GradesRowContainer>
                 <GradeRowTitle>
                     <p>Nota</p>
-                    <p>Peso %</p>
+                    <p>Peso % ({actualPercentage})</p>
                     <p></p>
                 </GradeRowTitle>
                 {listOfGrades}
